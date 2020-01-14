@@ -11,13 +11,17 @@
 <body>
   <canvas id="gameCanvas" width="800" height="600"></canvas>
 
+
   <script>
     let canvas;
     let canvasContext;
     let ballX = 0;
     let ballY = 0;
-    let ballSpeedX = 8;
-    let ballSpeedY = 8;
+    let ballSpeedX = 7;
+    let ballSpeedY = 5.6;
+
+    let player1Score = 0;
+    let player2Score = 0;
 
     let paddle1Y = 250;
     let paddle2Y = 250;
@@ -35,8 +39,12 @@
       }
     }
 
+      let x = document.getElementById("audio")
+
     window.onload = function () {
-      console.log("oi");
+
+
+
       canvas = document.getElementById('gameCanvas');
       canvasContext = canvas.getContext('2d');
 
@@ -60,11 +68,12 @@
     }
 
     function computerMovement(){
-      if(paddle2Y < ballY){
-        paddle2Y = paddle2Y += 15;
+      let paddle2YCenter = paddle2Y + (PADDLE_HEIGHT/2) ;
+      if(paddle2YCenter < ballY){
+        paddle2Y = paddle2Y += 4.5;
 
-      }else{
-        paddle2Y = paddle2Y -= 15;
+      }else if(paddle2YCenter > ballY+35 ){
+        paddle2Y = paddle2Y -= 4.5;
       }
     }
 
@@ -79,6 +88,7 @@
             ballSpeedX = -ballSpeedX;
         } else{
         ballReset();
+        player1Score ++;
         }
       }
       if(ballX <= 0){
@@ -86,6 +96,7 @@
             ballSpeedX = -ballSpeedX;
         } else{
         ballReset();
+        player2Score ++;
         }
       }
 
@@ -106,6 +117,9 @@
       colorRect((canvas.width-PADDLE_THICKNESS), paddle2Y, 10, PADDLE_HEIGHT, 'white');
       //ball
       colorCircle(ballX, ballY, PADDLE_THICKNESS, 'white');
+      //score
+      canvasContext.fillText(player1Score, 100,100);
+      canvasContext.fillText(player2Score, canvas.width-100,100);
     }
 
     function colorCircle(centerX, centerY, radius, drawColor){
